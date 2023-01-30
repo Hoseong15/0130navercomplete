@@ -23,3 +23,73 @@ $("#userid input").focusout(function() {
     idveri = true;
   }
 })
+
+//비밀번호
+//
+$("#userpw input").focusout(function() {
+  let len = $(this).val().length;
+  pwveri = false;
+  if(len == 0) {
+    $("#userpw .warn").html('<span class="text-red">필수 정보 입니다.</span>');
+    $("#userpw .inputbox img").attr("src", "images/m_icon_pw_step_01.png");
+    $("#userpw .inputbox span").empty();
+
+  } else if(len < 8 || len > 16) {
+    $("#userpw .warn").html('<span class="text-red">8~16자 영문 대 소문자,숫자,특수문자를 사용하세요.</span>');
+    $("#userpw .inputbox p").html('<span class="text-red">사용불가</span>');
+    $("#userpw .inputbox img").attr("src", "images/m_icon_pw_step_10.png");
+
+
+  } else{
+    pwveri = true;
+    $("#userpw .warn").empty();
+    $("#userpw .inputbox p").html('<span class="text-green">안전</span>');
+    $("#userpw .inputbox img").attr("src", "images/m_icon_pw_step_04.png");
+  }
+})
+
+
+
+
+
+//비밀번호 재확인
+//userpwchk input에서 focusout 됐을 때  value 값이
+
+$("#userpw-chk input").focusout(function() {
+  let userpwchk = $(this).val();
+  pwchkveri = false;
+  if(userpwchk.length == 0) {
+    $("#userpw-chk .warn").html('<span class="text-red">필수 정보 입니다.</span>');
+    $("#userpw-chk .inpubox img").attr("src", "images/m_icon_pw_step_02.png");
+  }else if(userpwchk == $("#userpw input").val()) {
+    pwchkveri = true;
+    //remove / empty
+    // remove 요소 자체를 지우고 empty 요소 안 내용을 지운다.
+    $("#userpw-chk .warn").empty();
+    $("#userpw-chk .inputbox img").attr("src", "images/m_icon_pw_step_07.png");
+  } else{
+    $("#userpw-chk .warn").html('<span class="text-red">비밀번호가 일치하지 않습니다.</span>');
+    $("#userpw-chk .inputbox img").attr("src", "images/m_icon_pw_step_02.png");
+  }
+})
+
+
+// 이름
+// #usename input에서 focusout될 때
+$("#username input").focusout(function() {
+  let username = $("#username input").val();
+  nameveri: false;
+  // Js 정규 표현식 입력값을 체크
+  // 형식 : /정규식/
+  // 문자와 숙자가 아닌 것
+  let reg = /[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]/g;
+  if (username.length == 0) {
+   $("#username .warn").html('<span class=text-red>필수 정보입니다.</span>')
+ } else if(reg.test(username)) {
+  //정규식을 만족하면 true 만족하지 않으면 false 반환
+  $("#username .warn").html('<span class=text-red>한글과 영문 대 소문자를 사용하세요(특수기호 사용불가).</span>')
+ } else {
+  nameveri: true;
+  $("#username .warn").empty()
+ }
+})
