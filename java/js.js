@@ -93,3 +93,128 @@ $("#username input").focusout(function() {
   $("#username .warn").empty()
  }
 })
+
+
+//생년월일
+//#year , month, #date에서 focusout됐을 때 (실행할 함수)
+// #birth .warn 빨간 글씨로 "태어난 년도 4자리를 정확하게 입력하세요"를 입력
+
+// #month 값이 비어있으면 (조건2)
+// #month .warn 빨간 글씨로 "태어난 월을 선택하세요"를 입력
+
+// #date 값이 비어있으면 (조건3)
+// #date .warn 빨간 글씨로 "태어난 일(날짜) 2자리를 정확하게 입력하세요."를 입력
+
+// 만약 연,월,일의 값이 숫자가 아니라면(조건4) isNaN
+// #birth .warn 빨간 글씨로 "생년월일을 다시 확인해주세요."(실행문3)
+
+// 올 해 기준으로 나이가 100 초과라면(조건5)
+// #birth .warn 빨간 글씨로 "정말이세요?"(실행문3)
+
+//매개변수(파라미터)사용
+//코드의 중복을 줄일 수 있다.
+
+function para(text) {
+  $("#birth .warn").html('<span class=text-red>'+ text +'</span>')
+}
+
+
+$('#year , month, #date').focusout(function() {
+  let year = $("#year , month, #date").val();
+  let month = $("#month").val();
+  let date = $("#date").val();
+  // 현재 날짜 및 시간
+  let now = new Date();
+  console.log(now);
+  // Date 객체의 getTime() 메서드 1970년 1월 1일 00시 00분 00초 UTC(세계표준시)를 기준으로 경과한 밀리초를 반환
+  let nowstamp = now.getTime(); 
+  // 현재 날짜 및 시간에서 현재 연도의 네 자리값을 변수에 할당
+  now = now.getFullYear();
+  console.log(now);
+
+  let birth = new Date(year, month, date);
+  birth = birth.getTime();
+  birthveri = false;
+
+  if(year.length != 4) {
+    para("태어난 년도 4자리를 정확하게 입력하세요.");
+    // $("#birth .warn").html('<span class=text-red>태어난 년도 4자리를 정확하게 입력하세요.</span>')
+  } else if(month.length == 0) {
+    para("태어난 월을 선택하세요.");
+    // $("#birth .warn").html('<span class=text-red>태어난 월을 선택하세요.</span>')
+  } else if(date.length == 0 || date > 31 || date == 0) {
+    para("태어난 일(날짜) 2자리를 정확하게 입력하세요.");
+    // $("#birth .warn").html('<span class=text-red>태어난 일(날짜) 2자리를 정확하게 입력하세요.</span>')
+  } else if (isNaN(year * month * date)) {
+    para("생년월일을 다시 확인해주세요.");
+    // $("#birth .warn").html('<span class=text-red>생년월일을 다시 확인해주세요.</span>')
+  } else if (now - year > 100) {
+    para("정말이세요");
+    // $("#birth .warn").html('<span class=text-red>정말이세요?</span>')
+  } else if(nowstamp < birth) {
+    para("미래에서 오셨군요^^");
+    // $("#birth .warn").html('<span class=text-red>미래에서 오셨군요^^</span>')
+  } else {
+    birthveri = true;
+    para('');
+    // $("#birth .warn").empty()
+  }
+})
+
+// 성별
+//#gender .inputbox를 클릭 했을 때
+
+$("#gender .inputbox").click(function(e) {
+  // radio의 기본 클릭동작 해제
+  e.preventDefault();
+  $("#gender .inputbox").removeClass('btn-primary');
+  $("#gender .inputbox input").removeAttr('checked');
+  //내가 클릭하는 inputbox한테 클래스, 속성 추가
+  $(this).addClass('btn-primary')
+  $(this).children('input[type="radio"]').attr('checked', true);
+  genderveri = true;
+})
+
+
+//본인 확인 이메일(선택)
+//#user-mail .input에서 focusout 됐을 때
+$("#usermail input").focusout(function() {
+  let mail = $(this).val();
+  let redExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+  mailveri = true;
+  if(mail.length == 0) {
+    $("#usermail .warn").empty();
+  } else if(!redExp.test(mail)) {
+    $("#usermail .warn").html('<span class="text-red">이메일 주소를 다시 확인해주세요.</span>')
+    mailveri = false;
+  } else {
+    $("#usermail .warn").empty();
+  }
+})
+
+//휴대전화
+// #phonenum input에서 focusout 됐을 때 
+// 그것의 value.length가 0이라면 (조건1)
+// #phone .warn "필수정보입니다."(실행문1) 
+$("#phonenum input").focusout(function() {
+  if($(this).val().length == 0) {
+    $("#phone .warn").html('<span class="text-red">필수정보입니다.</span>');
+  }else {
+    $("#phone .warn").empty();
+  }
+})
+
+
+// #veribtn을 클릭 했을 때 
+$("#veribtn").click(function() {
+  let verifi = $("#phonenum input").val();
+  // 숫자를 제외한 모든 문자제거
+  // 문자열 치환 replace
+  verifi = verifi.replace(/[^0-9]/g, '');
+  $("#phonenum input").val(verifi);
+
+  //#phonenum input value length가 10~11자리 아니라면(조건1)
+  if(verifi.length < 10 || verifi.length > 11) {
+   
+  }
+})
