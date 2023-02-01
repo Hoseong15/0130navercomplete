@@ -335,6 +335,7 @@ $("#join-btn").click(function() {
   if(idveri && pwveri && pwchkveri && nameveri && birthveri && genderveri && phoneveri && addressveri == true) {
    $('#join-form').submit();
   } else {
-   
+   //강제로 이벤트를 발생시키는 매서드
+   $("input").trigger("focusout");
   }
 })
